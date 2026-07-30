@@ -17,15 +17,12 @@ export default function CalendarDay({
         (h) => h.date === iso
     );
 
-    console.log("ISO:", iso);
-    console.log("Holidays prop:", holidays);
-    console.log("Day holidays:", dayHolidays);
-
     const hasHoliday = dayHolidays.length > 0;
 
-    const booked = bookings.some(
+    // Check whether this date has any bookings
+    const bookedCount = bookings.filter(
         (b) => b.booking_date === iso
-    );
+    ).length;
 
     const isSaturday = day.getDay() === 6;
     const isSunday = day.getDay() === 0;
@@ -47,25 +44,28 @@ export default function CalendarDay({
     else if (weekend) {
         bg = "bg-orange-100 border-orange-300 text-orange-700";
     }
-    else if (booked) {
-        bg = "bg-gray-200 border-gray-400 text-gray-700";
-    }
     else if (selected) {
         bg = "bg-blue-600 border-blue-600 text-white";
     }
     else if (today) {
         bg = "bg-green-100 border-green-500";
     }
+    else if (bookedCount > 0) {
+        // Only highlight the day
+        bg = "bg-blue-50 border-blue-300";
+    }
 
     return (
         <button
-            disabled={hasHoliday || booked || weekend}
+            // ❌ Don't disable booked dates
+            // Only disable holidays and weekends
+            disabled={hasHoliday || weekend}
             onClick={() => setSelectedDate(day)}
             className={`aspect-square border rounded-xl p-2 transition-all ${bg}
-            ${hasHoliday || booked || weekend
-                    ? "cursor-not-allowed"
-                    : "hover:shadow-lg"
-                }`}
+            ${hasHoliday || weekend
+                ? "cursor-not-allowed"
+                : "hover:shadow-lg"
+            }`}
         >
             <div className="flex justify-between items-center">
 
@@ -96,24 +96,20 @@ export default function CalendarDay({
 
             {!hasHoliday && weekend && (
                 <div className="mt-3">
-
                     <p className="text-[10px] font-semibold">
                         {isSunday ? "Sunday" : "Saturday"}
                     </p>
-
                 </div>
             )}
 
-            {booked && (
+            {/* Show how many bookings exist */}
+            {!hasHoliday && !weekend && bookedCount > 0 && (
                 <div className="mt-3">
-
-                    <p className="text-[10px] font-semibold">
-                        Booked
+                    <p className="text-[10px] font-semibold text-blue-600">
+                        {bookedCount} Booked
                     </p>
-
                 </div>
             )}
-
         </button>
     );
 }

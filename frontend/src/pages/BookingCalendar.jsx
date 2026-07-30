@@ -201,6 +201,8 @@ export default function BookingCalendar() {
                                 <TimePicker
                                     selected={time}
                                     setSelected={setTime}
+                                    selectedDate={date}
+                                    bookings={calendarData.bookings}
                                 />
 
                             </div>

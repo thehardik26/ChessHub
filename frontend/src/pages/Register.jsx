@@ -4,6 +4,7 @@ import { registerUser } from "../api/auth";
 import {
     FaChessKnight,
     FaUser,
+    FaEnvelope,
     FaLock,
     FaEye,
     FaEyeSlash,
@@ -17,6 +18,7 @@ export default function Register() {
 
     const [form, setForm] = useState({
         username: "",
+        email: "",
         password: "",
         confirmPassword: "",
     });
@@ -32,17 +34,19 @@ export default function Register() {
         try {
             await registerUser({
                 username: form.username,
+                email: form.email,
                 password: form.password,
             });
 
             alert("Registration Successful!");
-
             navigate("/");
         } catch (err) {
             console.error(err);
 
             if (err.response?.data?.username) {
                 alert(err.response.data.username[0]);
+            } else if (err.response?.data?.email) {
+                alert(err.response.data.email[0]);
             } else {
                 alert("Registration Failed");
             }
@@ -104,6 +108,27 @@ export default function Register() {
 
                     </div>
 
+                    {/* Email */}
+                    <div className="flex items-center bg-white/60 rounded-2xl px-4 py-4 border border-white/40">
+
+                        <FaEnvelope className="text-gray-500 mr-3" />
+
+                        <input
+                            type="email"
+                            placeholder="Email"
+                            value={form.email}
+                            onChange={(e) =>
+                                setForm({
+                                    ...form,
+                                    email: e.target.value,
+                                })
+                            }
+                            className="w-full bg-transparent outline-none placeholder-gray-500"
+                            required
+                        />
+
+                    </div>
+
                     {/* Password */}
                     <div className="flex items-center bg-white/60 rounded-2xl px-4 py-4 border border-white/40">
 
@@ -125,15 +150,9 @@ export default function Register() {
 
                         <button
                             type="button"
-                            onClick={() =>
-                                setShowPassword(!showPassword)
-                            }
+                            onClick={() => setShowPassword(!showPassword)}
                         >
-                            {showPassword ? (
-                                <FaEyeSlash />
-                            ) : (
-                                <FaEye />
-                            )}
+                            {showPassword ? <FaEyeSlash /> : <FaEye />}
                         </button>
 
                     </div>
@@ -144,18 +163,13 @@ export default function Register() {
                         <FaLock className="text-gray-500 mr-3" />
 
                         <input
-                            type={
-                                showConfirmPassword
-                                    ? "text"
-                                    : "password"
-                            }
+                            type={showConfirmPassword ? "text" : "password"}
                             placeholder="Confirm Password"
                             value={form.confirmPassword}
                             onChange={(e) =>
                                 setForm({
                                     ...form,
-                                    confirmPassword:
-                                        e.target.value,
+                                    confirmPassword: e.target.value,
                                 })
                             }
                             className="w-full bg-transparent outline-none placeholder-gray-500"
@@ -165,16 +179,10 @@ export default function Register() {
                         <button
                             type="button"
                             onClick={() =>
-                                setShowConfirmPassword(
-                                    !showConfirmPassword
-                                )
+                                setShowConfirmPassword(!showConfirmPassword)
                             }
                         >
-                            {showConfirmPassword ? (
-                                <FaEyeSlash />
-                            ) : (
-                                <FaEye />
-                            )}
+                            {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
                         </button>
 
                     </div>

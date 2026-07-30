@@ -39,7 +39,7 @@ export default function SelectedSlotsPanel({
 
                 <div className="flex justify-between items-center border-b pb-3">
                     <span className="text-gray-500 font-medium">
-                        Time
+                        Time Slot
                     </span>
 
                     <span
@@ -53,7 +53,17 @@ export default function SelectedSlotsPanel({
                     </span>
                 </div>
 
-                {usingPass && (
+                <div className="flex justify-between items-center border-b pb-3">
+                    <span className="text-gray-500 font-medium">
+                        Duration
+                    </span>
+
+                    <span className="font-semibold text-gray-800">
+                        {plan.duration} Minutes
+                    </span>
+                </div>
+
+                {usingPass ? (
                     <>
                         <div className="flex justify-between items-center border-b pb-3">
                             <span className="text-gray-500 font-medium">
@@ -75,6 +85,16 @@ export default function SelectedSlotsPanel({
                             </span>
                         </div>
                     </>
+                ) : (
+                    <div className="flex justify-between items-center border-b pb-3">
+                        <span className="text-gray-500 font-medium">
+                            Payment Method
+                        </span>
+
+                        <span className="font-semibold text-blue-600">
+                            Online Payment
+                        </span>
+                    </div>
                 )}
 
                 <div className="flex justify-between items-center pt-3">
@@ -107,8 +127,7 @@ export default function SelectedSlotsPanel({
 
             {usingPass && (
                 <div className="mt-6 bg-green-100 border border-green-300 text-green-700 p-4 rounded-lg">
-                    ✅ This booking will use <strong>1 slot</strong> from
-                    your monthly pass. No payment is required.
+                    ✅ This booking will use <strong>1 slot</strong> from your monthly pass.
                 </div>
             )}
 
